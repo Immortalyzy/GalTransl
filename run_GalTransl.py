@@ -102,38 +102,31 @@ class ProjectManager:
             if len(sys.argv) > 2 and sys.argv[2] in TRANSLATOR_SUPPORTED.keys():
                 self.translator = sys.argv[2]
 
-        while True:
-            self.print_program_info()
+        self.print_program_info()
 
-            # 如果初始路径无效或未提供，进入交互式输入阶段
-            if not self.project_dir:
-                try:
-                    self.get_user_input()
-                except KeyboardInterrupt:
-                    print("\nGoodbye.")
-                    return
-            if not self.translator:
-                try:
-                    self.choose_translator()
-                except KeyboardInterrupt:
-                    print("\nGoodbye.")
-                    return
-            if self.translator not in ["show-plugs", "dump-name"]:
-                self.create_shortcut_win()
-            worker(
-                self.project_dir,
-                self.config_file_name,
-                self.translator,
-                show_banner=False,
-            )
+        # 如果初始路径无效或未提供，进入交互式输入阶段
+        if not self.project_dir:
+            try:
+                self.get_user_input()
+            except KeyboardInterrupt:
+                print("\nGoodbye.")
+                return
+        if not self.translator:
+            try:
+                self.choose_translator()
+            except KeyboardInterrupt:
+                print("\nGoodbye.")
+                return
+        if self.translator not in ["show-plugs", "dump-name"]:
+            self.create_shortcut_win()
+        worker(
+            self.project_dir,
+            self.config_file_name,
+            self.translator,
+            show_banner=False,
+        )
 
-            print("翻译任务完成，准备重新开始...")
-            self.user_input = ""
-            self.translator = ""
-
-            os.system("pause")
-            os.system("cls")
-
+        print("翻译任务完成，程序即将退出...")
 
 if __name__ == "__main__":
     manager = ProjectManager()
